@@ -1270,14 +1270,12 @@ html ="""
                                 </div>
                                 -->
                                 <div class="col-sm-6">
-                                    <label for="send_priority" class="col-xs-4 control-label">Priority <sup>2</sup></label>
+                                    <label for="send_priority" class="col-xs-4 control-label">Priority <sup>*</sup></label>
                                     <div class="col-xs-8">
                                         <select id="send_priority" class="form-control">
-                                          <option value="1" selected>Normal (x1 fee)</option>
-                                          <option value="2">High (x2 fee)</option>
-                                          <option value="4">Higher (x4 fee)</option>
-                                          <option value="20">Elevated (x20 fee)</option>
-                                          <option value="166">Forceful (x166 fee)</option>
+                                          <option value="1" selected>Normal</option>
+                                          <option value="2">Fast (x2 fee)</option>
+                                          <option value="4">High priority (x4 fee)</option>
                                         </select>
                                        <!--<input id="send_fee_level_slider" type="text"/>--> 
                                     </div>
@@ -1288,8 +1286,7 @@ html ="""
                                     <label class="col-xs-2 control-label sr-only">&nbsp;</label>
                                     <div class="col-xs-10">
                                         <input id="checkbox_save_address" type="checkbox" /> <label for="checkbox_save_address">Save address (with payment id) to address book</label>
-                                        <label style="color:#999"><small>1. Higher mixin (ringsize) means higher transaction cost, using default mixin# (12) is recommended</small></label>
-                                        <label style="color:#999"><small>2. Only choose higher priority when there are many transactions in tx pool or "Normal" works just fine</small></label>
+                                        <label style="color:#999"><small>*Only choose higher priority when there are many transactions in tx pool</small></label>
                                     </div>
                                 </div>
                             </div>
