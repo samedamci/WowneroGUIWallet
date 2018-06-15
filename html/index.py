@@ -510,7 +510,7 @@ html ="""
                     }
                     
                     var tx_status_text = tx['status'] == "in" || tx['status'] == "out" ? "Completed" :  (tx['status'] == "pending" ? "Pending" : "In Pool");
-                    if(tx['confirmation'] < 10){
+                    if(tx['confirmation'] < 4){
                         if(tx_status_text == "Completed") tx_status_text = "Locked";
                         tx_status_text += " (+" + tx['confirmation'] + " confirms)";                
                     }
@@ -539,8 +539,8 @@ html ="""
                                                             'tx_time': timeConverter(tx['timestamp']),
                                                             'tx_height': tx['height'] > 0 ? tx['height'] : "?" ,
                                                             'tx_confirmation': tx['confirmation'],
-                                                            'tx_lock_icon': tx['confirmation'] < 10 ? '<i class="fa fa-lock"></i> ' : '',
-                                                            'tx_lock_cls': tx['confirmation'] < 10 ? "tx-lock" : "",
+                                                            'tx_lock_icon': tx['confirmation'] < 4 ? '<i class="fa fa-lock"></i> ' : '',
+                                                            'tx_lock_cls': tx['confirmation'] < 4 ? "tx-lock" : "",
                                                             'tx_note': tx['note'],
                                                             'tx_note_hide': tx['note'].length > 0 ? "" : "tx-note-hide",
                                                             'tx_destinations' : dest_html,
@@ -565,7 +565,7 @@ html ="""
                     for(var i=0; i<txs.length; i++){
                         var tx = txs[i];
                         var row = Mustache.render(tx_history_row_tmpl, {
-                            'tx_status': tx['confirmation'] == 0 ? '<i class="fa fa-clock-o"></i>' : ( tx['confirmation'] < 10 ? '<i class="fa fa-lock"></i>' : '<i class="fa fa-unlock"></i>' ),
+                            'tx_status': tx['confirmation'] == 0 ? '<i class="fa fa-clock-o"></i>' : ( tx['confirmation'] < 4 ? '<i class="fa fa-lock"></i>' : '<i class="fa fa-unlock"></i>' ),
                             'tx_direction': tx['direction'] == "in" ? '<i class="fa fa-mail-forward"></i>' : '<i class="fa fa-reply"></i>',
                             'tx_date_time': dateConverter(tx['timestamp']) + ' ' + timeConverter(tx['timestamp']),
                             'tx_id': tx['txid'],
@@ -707,7 +707,7 @@ html ="""
                         for(var i=0; i < recent_txs.length; i++){
                             var tx = recent_txs[i];
                             var tx_status_text = tx['status'] == "in" || tx['status'] == "out" ? "Completed" :  (tx['status'] == "pending" ? "Pending" : "In Pool");
-                            if(tx['confirmation'] < 10){
+                            if(tx['confirmation'] < 4){
                                 if(tx_status_text == "Completed") tx_status_text = "Locked";
                                 tx_status_text += " (+" + tx['confirmation'] + " confirms)";                
                             }
@@ -726,8 +726,8 @@ html ="""
                                                             'tx_time': timeConverter(tx['timestamp']),
                                                             'tx_height': tx['height'] > 0 ? tx['height'] : "?",
                                                             'tx_confirmation': tx['confirmation'],
-                                                            'tx_lock_icon': tx['confirmation'] < 10 ? '<i class="fa fa-lock"></i> ' : '',
-                                                            'tx_lock_cls': tx['confirmation'] < 10 ? "tx-lock" : ""
+                                                            'tx_lock_icon': tx['confirmation'] < 4 ? '<i class="fa fa-lock"></i> ' : '',
+                                                            'tx_lock_cls': tx['confirmation'] < 4 ? "tx-lock" : ""
                                                         });
                             recent_txs_div.append(tx_rendered);
                         }
