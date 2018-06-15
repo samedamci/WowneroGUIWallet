@@ -110,7 +110,7 @@ class BaseWebUI(QMainWindow):
         self.view.setZoomFactor(1)
         
         self.setWindowTitle(APP_NAME)
-        self.icon = self._getQIcon('sumokoin_icon_64.png')
+        self.icon = self._getQIcon('64x64.png')
         self.setWindowIcon(self.icon)
         
         self.setCentralWidget(self.view)
@@ -180,16 +180,16 @@ class MainWebUI(BaseWebUI):
     def __init__(self, app, hub, debug):
         window_size = qt_core.QSize(800, 600)
         BaseWebUI.__init__(self, index.html, app, hub, window_size, debug)
-        self.agent = '%s v.%s' % (USER_AGENT, '.'.join(str(v) for v in VERSION))
+        self.agent = '%s v%s' % (USER_AGENT, '.'.join(str(v) for v in VERSION))
         log("Starting [%s]..." % self.agent, LEVEL_INFO)
         
         # Setup the system tray icon
         if sys.platform == 'darwin':
-            tray_icon = 'sumokoin_16x16_mac.png'
+            tray_icon = '16x16.png'
         elif sys.platform == "win32":
-            tray_icon = 'sumokoin_16x16.png'
+            tray_icon = '16x16.png'
         else:
-            tray_icon = 'sumokoin_32x32_ubuntu.png'
+            tray_icon = '32x32.png'
         
         self.trayIcon = QSystemTrayIcon(self._getQIcon(tray_icon))
         self.trayIcon.setToolTip(tray_icon_tooltip)
@@ -506,7 +506,7 @@ class MainWebUI(BaseWebUI):
         
     def about(self):
         QMessageBox.about(self, "About", \
-            u"%s <br><br>Copyright© 2017 -2018 - Sumokoin Projects (www.sumokoin.org)" % self.agent)
+            u"%s <br><br>Copyright© 2017 -2018 - Wownero (www.wownero.org)" % self.agent)
     
     def _load_wallet(self):
         if self.wallet_info.load():

@@ -1,4 +1,4 @@
-# Sumokoin GUI Wallet
+# Wownero GUI Wallet
 
 Copyright (c) 2017, Sumokoin.org
 
@@ -11,7 +11,7 @@ Copyright (c) 2017, Sumokoin.org
 
 1. Clone the repo:
 		
-		git clone https://github.com/sumoprojects/SumoGUIWallet SumoGUIWallet
+		git clone https://github.com/wownero/WowneroGUIWallet
 
 2. Install dependencies (with Python 2.7):
 
@@ -28,9 +28,9 @@ Copyright (c) 2017, Sumokoin.org
 			sudo apt install python-pyside
 
 
-3. Build/download Sumokoin binaries from [Sumokoin repo](https://github.com/sumoprojects/sumokoin) and put it to `Resources/bin` sub-directory.
+3. Build/download Wownero binaries from [Wownero repo](https://github.com/wownero/wownero) and put it to `Resources/bin` sub-directory.
 
 4. Run the wallet (Python 2.7):
 		
-		cd /path/to/SumoGUIWallet
+		cd /path/to/WowneroGUIWallet
 		python wallet.py

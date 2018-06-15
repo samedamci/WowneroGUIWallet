@@ -32,8 +32,8 @@ html ="""
                 var seed = $('#seed').val();
                 var restore_height = $('#restore_height_txt').val();
                 seed = replaceAll(seed, "\\n", " ");
-                if(seed.length == 0 || seed.split(" ").length != 26)
-                    alert("Please paste 26 mnemonic seed words to above box", "Seed words required!");
+                if(seed.length == 0 || seed.split(" ").length != 25)
+                    alert("Please paste 25 mnemonic seed words to above box", "Seed words required!");
                 else{
                     var h =  !isNaN(parseInt(restore_height)) ? parseInt(restore_height) : 0;
                     if(h < 0) h = 0;
@@ -258,7 +258,7 @@ html ="""
                         <h4>Restore Wallet <small></small></h4>
                         <div class="form-group">
                             <label for="seed" style="font-weight: bold;margin-right: 20px">Mnemonic Seed:</label>    <button id="paste_seed_btn" type="button" class="btn btn-warning btn-sm" style="text-transform: none" onclick="paste_seed()"><i class="fa fa-paste"></i> Paste</button>
-                            <textarea id="seed" class="form-control" placeholder="Paste 26 mnemonic seed words here (use [Paste] button above or press Ctrl+V)" style="height:80px;margin-bottom:10px;margin-top:10px;font-size:100%"></textarea>
+                            <textarea id="seed" class="form-control" placeholder="Paste 25 mnemonic seed words here (use [Paste] button above or press Ctrl+V)" style="height:80px;margin-bottom:10px;margin-top:10px;font-size:100%"></textarea>
                             <button id="restore_wallet_btn" type="button" class="btn btn-primary" onclick="restore_wallet()"><i class="fa fa-undo"></i> Restore</button>
                             <input id="restore_height_txt" type="text" class="form-control" style="display: inline-block; float:right; width: 100px" value="0"/> <label for="restore_height_txt" style="font-weight: bold; display:inline-block; float:right; margin-right:20px;">Restore from height#</label> 
                         </div>
@@ -287,7 +287,7 @@ html ="""
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label for="wallet_address">Address</label>
-                            <input id="wallet_address" type="text" class="form-control address-box" style="color:#c7254e;" readonly="readonly" value="Sumoo..."/>
+                            <input id="wallet_address" type="text" class="form-control address-box" style="color:#c7254e;" readonly="readonly" value="Wo..."/>
                         </div>
                         <div class="form-group">
                             <label for="wallet_seed_words">Mnemonic seed <code style="font-weight: bold; color: red">(Important! Always backup the seed words for wallet recovery!)</code></label>

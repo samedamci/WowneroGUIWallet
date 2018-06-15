@@ -16,6 +16,7 @@ html ="""
                 -webkit-box-sizing: border-box;
                 -moz-box-sizing: border-box;
                 box-sizing: border-box;
+                /* EB12FF FF8F05 */
             }
             
             body {
@@ -24,7 +25,7 @@ html ="""
               
                 cursor: default;
                 background-color: #fff;
-                color: #76A500;
+                color: #000;
                 background-position: center center;
                 font-family: "RoboReg", "Helvetica Neue",Helvetica,Arial,sans-serif;
                 font-size: 14px;
@@ -80,7 +81,7 @@ html ="""
             }
             
             #balance_tab h4, #balance_tab h5{
-                color: #76A500;
+                color: #FF8F05;
             }
             
             #balance_tab h5 span{
@@ -374,6 +375,16 @@ html ="""
                 text-align: center;
             }
             
+            /* bootstrap overrides */
+            
+            .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+                background-color: #EB12FF !important;
+            }
+            
+            .progress-bar {
+              background-color: #EB12FF;
+            }
+            
         </style>
         
         <script src="./scripts/jquery-1.9.1.min.js"></script>
@@ -508,7 +519,7 @@ html ="""
                     if(tx.hasOwnProperty('destinations')){
                         var destinations = tx['destinations'];
                         for(var i=0; i < destinations.length; i++ ){
-                            dest_html += '<li>Amount: <span class="tx-list tx-amount tx-' + tx['status'] + '">' + printMoney(destinations[i]['amount']/1000000000) + "</span>Address: <strong>" + destinations[i]['address'] + "</strong></li>";
+                            dest_html += '<li>Amount: <span class="tx-list tx-amount tx-' + tx['status'] + '">' + printMoney(destinations[i]['amount']/100000000000) + "</span>Address: <strong>" + destinations[i]['address'] + "</strong></li>";
                         }
                     }
                     
@@ -521,8 +532,8 @@ html ="""
                                                             'tx_fa_icon': tx['direction'] == "in" ? "mail-forward" : "reply",
                                                             'tx_id': tx['txid'],
                                                             'tx_payment_id': tx['payment_id'], 
-                                                            'tx_amount': printMoney(tx['amount']/1000000000.),
-                                                            'tx_fee': printMoney(tx['fee']/1000000000.),
+                                                            'tx_amount': printMoney(tx['amount']/100000000000.),
+                                                            'tx_fee': printMoney(tx['fee']/100000000000.),
                                                             'tx_fee_hide': tx['fee'] > 0 ? '' : 'tx-fee-hide',
                                                             'tx_date': dateConverter(tx['timestamp']),
                                                             'tx_time': timeConverter(tx['timestamp']),
@@ -560,7 +571,7 @@ html ="""
                             'tx_id': tx['txid'],
                             'tx_id_short': tx['txid'].substring(0, 26) + "...",
                             'tx_payment_id': tx['payment_id'].substring(0, 16),
-                            'tx_amount': printMoney(tx['amount']/1000000000.),
+                            'tx_amount': printMoney(tx['amount']/100000000000.),
                             'tx_height': tx['height'],
                             'cls_in_out': tx['status']
                         });
@@ -708,8 +719,8 @@ html ="""
                                                             'tx_fa_icon': tx['direction'] == "in" ? "mail-forward" : "reply",
                                                             'tx_id': tx['txid'],
                                                             'tx_payment_id': tx['payment_id'], 
-                                                            'tx_amount': printMoney(tx['amount']/1000000000.),
-                                                            'tx_fee': printMoney(tx['fee']/1000000000.),
+                                                            'tx_amount': printMoney(tx['amount']/100000000000.),
+                                                            'tx_fee': printMoney(tx['fee']/100000000000.),
                                                             'tx_fee_hide': tx['fee'] > 0 ? '' : 'tx-fee-hide',
                                                             'tx_date': dateConverter(tx['timestamp']),
                                                             'tx_time': timeConverter(tx['timestamp']),
@@ -857,9 +868,9 @@ html ="""
                     errors.push("Address is required!");
                     $('#send_address').parent().addClass('has-error');
                 }
-                else if(!((address.substr(0, 4) == "Sumo" && address.length == 99) || 
-                    (address.substr(0, 4) == "Sumi"  && address.length == 110) || 
-                    (address.substr(0, 4) == "Subo"  && address.length == 98)))
+                else if(!((address.substr(0, 2) == "Wo" && address.length == 97) || 
+                    (address.substr(0, 2) == "So" && address.length == 108) || 
+                    (address.substr(0, 2) == "WW" && address.length == 97)))
                 {
                     errors.push("Address is not valid!");
                     $('#send_address').parent().addClass('has-error');
@@ -889,7 +900,8 @@ html ="""
                 
                 var tx_desc = $('#send_tx_desc').val().trim();
                 var priority = $('#send_priority').val();
-                var mixin = $('#send_mixins').val();
+                // var mixin = $('#send_mixins').val();
+                var mixin = 9;
                 
                 btn_send_tx.disable(true);
                 show_progress("Sending coins... This can take a while for big amount...");
@@ -1148,7 +1160,7 @@ html ="""
                           <div class="panel-heading" role="tab" id="headingTwo">
                             <h4 class="panel-title">
                             <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                              New (Ghost) Addresses
+                              New Subaddresses
                             </a>
                           </h4>
                           </div>
@@ -1181,8 +1193,8 @@ html ="""
                                 <h5><i class="fa fa-fw fa-unlock"></i> Unlocked Balance:</h5>
                             </div>
                             <div class="col-xs-6" style="text-align:right">
-                                <h5><span id="balance">0.000000000</span> <small>SUMO</small> <span class="syncing"> (syncing)</span></h5>
-                                <h5><span id="unlocked_balance">0.000000000</span> <small>SUMO</small> <span class="syncing"> (syncing)</span></h5>
+                                <h5><span id="balance">0.000000000</span> <small>WOW</small> <span class="syncing"> (syncing)</span></h5>
+                                <h5><span id="unlocked_balance">0.000000000</span> <small>WOW</small> <span class="syncing"> (syncing)</span></h5>
                             </div>
                             <div class="col-xs-12" style="margin-top: 10px">
                                 <button id="btn_rescan_spent" type="button" class="btn btn-primary" onclick="rescan_spent()" disabled><i class="fa fa-sort-amount-desc"></i> Rescan Spent</button>
@@ -1241,6 +1253,7 @@ html ="""
                                 </div>
                             </div>
                             <div class="form-group">
+                                <!--
                                 <div class="col-sm-6">
                                     <label for="send_mixins" class="col-xs-4 control-label">Privacy <sup>1</sup></label>
                                     <div class="col-xs-8">
@@ -1255,6 +1268,7 @@ html ="""
                                         </select>
                                     </div>
                                 </div>
+                                -->
                                 <div class="col-sm-6">
                                     <label for="send_priority" class="col-xs-4 control-label">Priority <sup>2</sup></label>
                                     <div class="col-xs-8">
@@ -1483,7 +1497,7 @@ html ="""
         <script id="recent_tx_row_templ" type="x-tmpl-mustache">
             <div class="col-sm-12">
                 <div class="col-xs-10" style="padding-right:0">
-                    <p class="tx-list tx-{{cls_in_out}}"><i class="fa fa-{{ tx_fa_icon }}"></i> ({{tx_direction}}) <span class="tx-list txid"><a href="javascript:open_link('https://explorer.sumokoin.com/tx/{{ tx_id }}')" title="View on blockchain explorer">{{ tx_id }}</a></span></p>
+                    <p class="tx-list tx-{{cls_in_out}}"><i class="fa fa-{{ tx_fa_icon }}"></i> ({{tx_direction}}) <span class="tx-list txid"><a href="javascript:open_link('http://explorer.wowne.ro/tx/{{ tx_id }}')" title="View on blockchain explorer">{{ tx_id }}</a></span></p>
                     Payment ID: <span class="tx-list tx-payment-id">{{ tx_payment_id }}</span><br/>
                     Height: <span class="tx-list tx-height">{{ tx_height }}</span>  Date: <span class="tx-list tx-date">{{ tx_date }}</span> Time: <span class="tx-list tx-time">{{ tx_time }}</span> Status: <span class="tx-list tx-status">{{ tx_status }}</span><br/>
                     <p style="font-size:140%">Amount: <span class="tx-list tx-{{cls_in_out}} tx-amount {{tx_lock_cls}}">{{{tx_lock_icon}}}{{ tx_amount }}</span> <span class="{{ tx_fee_hide }}">Fee:</span> <span class="tx-list tx-{{cls_in_out}} tx-fee {{ tx_fee_hide }}">{{ tx_fee }}</span></p> 
@@ -1497,7 +1511,7 @@ html ="""
         
         <script id="tx_detail_templ" type="x-tmpl-mustache">
             <p class="tx-list tx-{{cls_in_out}}" style="font-size: 90%"><i class="fa fa-{{ tx_fa_icon }}"></i> {{tx_direction}}<br>
-                <span class="tx-list txid"><a href="javascript:open_link('https://explorer.sumokoin.com/tx/{{ tx_id }}')" title="View on blockchain explorer">{{ tx_id }}</a></span>
+                <span class="tx-list txid"><a href="javascript:open_link('http://explorer.wowne.ro/tx/{{ tx_id }}')" title="View on blockchain explorer">{{ tx_id }}</a></span>
             </p>
             <ul style="font-size: 90%">
                 <li>Payment ID: <span class="tx-list tx-payment-id">{{ tx_payment_id }}</span></li>

@@ -13,12 +13,12 @@ import logging
 
 from utils.common import getHomeDir, makeDir
 
-USER_AGENT = "Sumokoin GUI Wallet"
-APP_NAME = "Sumokoin GUI Wallet"
-VERSION = [0, 0, 4]
+USER_AGENT = "Wownero GUI Wallet"
+APP_NAME = "Wownero GUI Wallet"
+VERSION = [0, 2, 1]
 
 
-_data_dir = makeDir(os.path.join(getHomeDir(), 'SumokoinGUIWallet'))
+_data_dir = makeDir(os.path.join(getHomeDir(), 'WowneroGUIWallet'))
 DATA_DIR = _data_dir
 
 log_file  = os.path.join(DATA_DIR, 'logs', 'app.log') # default logging file
@@ -34,4 +34,4 @@ seed_languages = [("0", "English"),
                 ]
 
 # COIN - number of smallest units in one coin
-COIN = 1000000000.0
+COIN = 100000000000.0

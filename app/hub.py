@@ -225,7 +225,7 @@ class Hub(QObject):
                                         if mnemonic_seed else "Creating wallet...")
                 self.app_process_events()
                 wallet_filepath = os.path.join(wallet_dir_path, str(uuid.uuid4().hex) + '.bin')
-                wallet_log_path = os.path.join(wallet_dir_path, 'sumo-wallet-cli.log')
+                wallet_log_path = os.path.join(wallet_dir_path, 'wownero-wallet-cli.log')
                 resources_path = self.app.property("ResPath")
                 if not mnemonic_seed: # i.e. create new wallet
                     self.wallet_cli_manager = WalletCliManager(resources_path, \
@@ -238,18 +238,23 @@ class Hub(QObject):
 #                     self.app_process_events(0.5)
 #                     self.wallet_cli_manager.send_command("exit")
                 else: # restore wallet
+                    # 1) wallet name
+                    # 2) electrum seed
+                    # 3) electrum seed pass
+                    # 4) password
+                    # 5) password repeat
                     self.wallet_cli_manager = WalletCliManager(resources_path, \
                                                 wallet_filepath, wallet_log_path, True, restore_height)
                     self.wallet_cli_manager.start()
                     self.app_process_events(1)
                     self.wallet_cli_manager.send_command(wallet_filepath)
                     self.app_process_events(0.5)
-                    self.wallet_cli_manager.send_command("Y")
-                    self.app_process_events(0.5)
                     self.wallet_cli_manager.send_command(mnemonic_seed)
-                    if restore_height == 0:
-                        self.app_process_events(0.5)
-                        self.wallet_cli_manager.send_command("0")
+                    self.app_process_events(0.5)
+                    self.wallet_cli_manager.send_command("")
+                    # if restore_height == 0:
+                        # self.app_process_events(0.5)
+                        # self.wallet_cli_manager.send_command("0")
                     self.app_process_events(0.5)
                     self.wallet_cli_manager.send_command(wallet_password)
                     self.app_process_events(0.5)
@@ -651,7 +656,7 @@ class Hub(QObject):
     
     @Slot()
     def view_daemon_log(self):
-        log_file = os.path.join(DATA_DIR, 'logs', "sumokoind.log")
+        log_file = os.path.join(DATA_DIR, 'logs', "wownerod.log")
         log_dialog = LogViewer(parent=self.ui, log_file=log_file)
         log_dialog.load_log()
     
