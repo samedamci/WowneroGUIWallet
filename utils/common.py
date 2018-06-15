@@ -92,12 +92,12 @@ def print_money(amount):
         amount = int(amount)
     except:
         raise Exception("Error parsing amount. Money amount must be an integer.")
-    return "%s <small>WOW</small>" % ("{:,.9f}".format(amount/100000000000.))
+    return "%s <small>WOW</small>" % ("{:,.11f}".format(amount/100000000000.))
 
 def print_money2(amount):
     try:
         amount = int(amount)
     except:
         raise Exception("Error parsing amount. Money amount must be an integer.")
-    return "%s" % ("{:,.9f}".format(amount/100000000000.))
+    return "%s" % ("{:,.11f}".format(amount/100000000000.))
     
