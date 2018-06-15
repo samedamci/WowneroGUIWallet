@@ -1193,8 +1193,8 @@ html ="""
                                 <h5><i class="fa fa-fw fa-unlock"></i> Unlocked Balance:</h5>
                             </div>
                             <div class="col-xs-6" style="text-align:right">
-                                <h5><span id="balance">0.000000000</span> <small>WOW</small> <span class="syncing"> (syncing)</span></h5>
-                                <h5><span id="unlocked_balance">0.000000000</span> <small>WOW</small> <span class="syncing"> (syncing)</span></h5>
+                                <h5><span id="balance">0.000000000</span> <small> &#x2375;</small> <span class="syncing"> (syncing)</span></h5>
+                                <h5><span id="unlocked_balance">0.000000000</span> <small> &#x2375;</small> <span class="syncing"> (syncing)</span></h5>
                             </div>
                             <div class="col-xs-12" style="margin-top: 10px">
                                 <button id="btn_rescan_spent" type="button" class="btn btn-primary" onclick="rescan_spent()" disabled><i class="fa fa-sort-amount-desc"></i> Rescan Spent</button>
@@ -1497,7 +1497,7 @@ html ="""
                     <p class="tx-list tx-{{cls_in_out}}"><i class="fa fa-{{ tx_fa_icon }}"></i> ({{tx_direction}}) <span class="tx-list txid"><a href="javascript:open_link('http://explorer.wowne.ro/tx/{{ tx_id }}')" title="View on blockchain explorer">{{ tx_id }}</a></span></p>
                     Payment ID: <span class="tx-list tx-payment-id">{{ tx_payment_id }}</span><br/>
                     Height: <span class="tx-list tx-height">{{ tx_height }}</span>  Date: <span class="tx-list tx-date">{{ tx_date }}</span> Time: <span class="tx-list tx-time">{{ tx_time }}</span> Status: <span class="tx-list tx-status">{{ tx_status }}</span><br/>
-                    <p style="font-size:140%">Amount: <span class="tx-list tx-{{cls_in_out}} tx-amount {{tx_lock_cls}}">{{{tx_lock_icon}}}{{ tx_amount }}</span> <span class="{{ tx_fee_hide }}">Fee:</span> <span class="tx-list tx-{{cls_in_out}} tx-fee {{ tx_fee_hide }}">{{ tx_fee }}</span></p> 
+                    <p style="font-size:140%">Amount: <span class="tx-list tx-{{cls_in_out}} tx-amount {{tx_lock_cls}}">{{{tx_lock_icon}}}{{ tx_amount }}<small> &#x2375;</small></span> <span class="{{ tx_fee_hide }}">Fee:</span> <span class="tx-list tx-{{cls_in_out}} tx-fee {{ tx_fee_hide }}">{{ tx_fee }}<small> &#x2375;</small></span></p> 
                 </div>
                 <div class="col-xs-2">
                     <button class="btn btn-warning" onclick="view_tx_detail('{{ tx_height }}', '{{ tx_id }}')">Details</button>
@@ -1514,7 +1514,7 @@ html ="""
                 <li>Payment ID: <span class="tx-list tx-payment-id">{{ tx_payment_id }}</span></li>
                 <li>Height: <span class="tx-list tx-height">{{ tx_height }}</span>  Date: <span class="tx-list tx-date">{{ tx_date }}</span> Time: <span class="tx-list tx-time">{{ tx_time }}</span></li>
                 <li>Status: <span class="tx-list tx-status">{{ tx_status }}</span></li>
-                <li>Amount: <span class="tx-list tx-{{cls_in_out}} tx-amount {{tx_lock_cls}}">{{{tx_lock_icon}}}{{ tx_amount }}</span> <span class="{{ tx_fee_hide }}">Fee:</span> <span class="tx-list tx-{{cls_in_out}} tx-fee {{ tx_fee_hide }}">{{ tx_fee }}</span></li>
+                <li>Amount: <span class="tx-list tx-{{cls_in_out}} tx-amount {{tx_lock_cls}}">{{{tx_lock_icon}}}{{ tx_amount }}<small> &#x2375;</small></span><span class="{{ tx_fee_hide }}">Fee:</span> <span class="tx-list tx-{{cls_in_out}} tx-fee {{ tx_fee_hide }}">{{ tx_fee }}<small> &#x2375;</small></span></li>
                 <li class="{{ tx_note_hide }}">Tx Note: <span class="tx-list tx-note">{{ tx_note }}</span></li>
             </ul>
             <div class="tx-destinations {{ tx_destinations_hide }}">
@@ -1541,7 +1541,7 @@ html ="""
                 <td>{{ tx_date_time }}</td>
                 <td>{{ tx_id_short }}</td>
                 <td>{{ tx_payment_id }}</td>
-                <td align="right">{{ tx_amount }}</td>
+                <td align="right">{{ tx_amount }}<small> &#x2375;</small></td>
                 <td><button class="btn btn-default btn-sm" onclick="view_tx_detail('{{ tx_height }}', '{{ tx_id }}')">Details</button></td>
             </tr>
         </script>
