@@ -384,7 +384,15 @@ html ="""
             .progress-bar {
               background-color: #EB12FF;
             }
-            
+
+            .wow {
+              position:absolute;
+              top: 90%;
+              right: 0;
+              opacity:0.1;
+              z-index: -1;
+            }
+
         </style>
         
         <script src="./scripts/jquery-1.9.1.min.js"></script>
@@ -1116,73 +1124,18 @@ html ="""
                     <form id="form_receive" class="form-horizontal">
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <label for="receive_address" class="col-xs-2 control-label">Main Address</label>
+                                <label for="receive_address" class="col-xs-2 control-label">WOW Address</label>
                                 <div class="col-xs-10 input-group" style="padding-left: 15px; padding-right: 15px;">
-                                    <input id="receive_address" type="text" class="form-control" style="font-weight: bold" maxlength="64" readonly />
-                                    <span class="input-group-btn">
-                                        <button id="btn_copy_address" class="btn btn-primary btn-sm" style="text-transform: none" type="button" tabindex="-1" onclick="copy_address()" data-toggle="tooltip" data-placement="bottom" data-trigger="manual" title="Address copied"><i class="fa fa-copy"></i></button>
-                                        <button id="btn_qr_address" class="btn btn-primary btn-sm" style="text-transform: none" type="button" tabindex="-1" onclick="qr_address()" title="Show QR code"><i class="fa fa-qrcode"></i></button>
-                                    </span>
+                                 <textarea class="form-control" id="receive_address" rows="3" readonly></textarea>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-left: 15px; margin-right: 15px;">
-                        <div class="panel panel-default">
-                          <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                              Used Addresses
-                            </a>
-                          </h4>
-                          </div>
-                          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table id="table_used_subaddresses" class="table table-hover table-striped table-condensed">
-                                        <thead>
-                                            <tr>
-                                                <th>Address</th>
-                                                <th style="text-align: right">Balance</th>
-                                                <th style="text-align: right">Unlocked</th>
-                                                <th style="text-align: right">Index</th>
-                                                <th>&nbsp;</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="panel panel-default">
-                          <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                              New Subaddresses
-                            </a>
-                          </h4>
-                          </div>
-                          <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body" style="overflow: auto">
-                                <div class="table-responsive">
-                                    <table id="table_new_subaddresses" class="table table-hover table-striped table-condensed">
-                                        <thead>
-                                            <tr>
-                                                <th>Address</th>
-                                                <th style="text-align: right">Index</th>
-                                                <th>&nbsp;</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
+                    <span class="input-group-btn" align="center">
+                        <button id="btn_copy_address" type="button" class="btn btn-primary" onclick="copy_address()" data-toggle="tooltip" data-placement="bottom" data-trigger="manual" title="Address copied"><i class="fa fa-copy"></i> Copy Address</button>
+                        <button id="btn_qr_address" type="button" class="btn btn-primary" onclick="qr_address()" title="Show QR code"><i class="fa fa-eye"></i> Get QR Code</button>
+                    </span>
+                    <img src="./images/wow.png" class="wow">
                 </div>
                 <div id="balance_tab" class="tab-pane fade in active">
                     <h3>BALANCE</h3>
