@@ -384,7 +384,15 @@ html ="""
             .progress-bar {
               background-color: #EB12FF;
             }
-            
+
+            .wow {
+              position:absolute;
+              top: 90%;
+              right: 0;
+              opacity:0.1;
+              z-index: -1;
+            }
+
         </style>
         
         <script src="./scripts/jquery-1.9.1.min.js"></script>
@@ -510,7 +518,7 @@ html ="""
                     }
                     
                     var tx_status_text = tx['status'] == "in" || tx['status'] == "out" ? "Completed" :  (tx['status'] == "pending" ? "Pending" : "In Pool");
-                    if(tx['confirmation'] < 10){
+                    if(tx['confirmation'] < 4){
                         if(tx_status_text == "Completed") tx_status_text = "Locked";
                         tx_status_text += " (+" + tx['confirmation'] + " confirms)";                
                     }
@@ -539,8 +547,8 @@ html ="""
                                                             'tx_time': timeConverter(tx['timestamp']),
                                                             'tx_height': tx['height'] > 0 ? tx['height'] : "?" ,
                                                             'tx_confirmation': tx['confirmation'],
-                                                            'tx_lock_icon': tx['confirmation'] < 10 ? '<i class="fa fa-lock"></i> ' : '',
-                                                            'tx_lock_cls': tx['confirmation'] < 10 ? "tx-lock" : "",
+                                                            'tx_lock_icon': tx['confirmation'] < 4 ? '<i class="fa fa-lock"></i> ' : '',
+                                                            'tx_lock_cls': tx['confirmation'] < 4 ? "tx-lock" : "",
                                                             'tx_note': tx['note'],
                                                             'tx_note_hide': tx['note'].length > 0 ? "" : "tx-note-hide",
                                                             'tx_destinations' : dest_html,
@@ -565,7 +573,7 @@ html ="""
                     for(var i=0; i<txs.length; i++){
                         var tx = txs[i];
                         var row = Mustache.render(tx_history_row_tmpl, {
-                            'tx_status': tx['confirmation'] == 0 ? '<i class="fa fa-clock-o"></i>' : ( tx['confirmation'] < 10 ? '<i class="fa fa-lock"></i>' : '<i class="fa fa-unlock"></i>' ),
+                            'tx_status': tx['confirmation'] == 0 ? '<i class="fa fa-clock-o"></i>' : ( tx['confirmation'] < 4 ? '<i class="fa fa-lock"></i>' : '<i class="fa fa-unlock"></i>' ),
                             'tx_direction': tx['direction'] == "in" ? '<i class="fa fa-mail-forward"></i>' : '<i class="fa fa-reply"></i>',
                             'tx_date_time': dateConverter(tx['timestamp']) + ' ' + timeConverter(tx['timestamp']),
                             'tx_id': tx['txid'],
@@ -707,7 +715,7 @@ html ="""
                         for(var i=0; i < recent_txs.length; i++){
                             var tx = recent_txs[i];
                             var tx_status_text = tx['status'] == "in" || tx['status'] == "out" ? "Completed" :  (tx['status'] == "pending" ? "Pending" : "In Pool");
-                            if(tx['confirmation'] < 10){
+                            if(tx['confirmation'] < 4){
                                 if(tx_status_text == "Completed") tx_status_text = "Locked";
                                 tx_status_text += " (+" + tx['confirmation'] + " confirms)";                
                             }
@@ -726,8 +734,8 @@ html ="""
                                                             'tx_time': timeConverter(tx['timestamp']),
                                                             'tx_height': tx['height'] > 0 ? tx['height'] : "?",
                                                             'tx_confirmation': tx['confirmation'],
-                                                            'tx_lock_icon': tx['confirmation'] < 10 ? '<i class="fa fa-lock"></i> ' : '',
-                                                            'tx_lock_cls': tx['confirmation'] < 10 ? "tx-lock" : ""
+                                                            'tx_lock_icon': tx['confirmation'] < 4 ? '<i class="fa fa-lock"></i> ' : '',
+                                                            'tx_lock_cls': tx['confirmation'] < 4 ? "tx-lock" : ""
                                                         });
                             recent_txs_div.append(tx_rendered);
                         }
@@ -1116,73 +1124,18 @@ html ="""
                     <form id="form_receive" class="form-horizontal">
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <label for="receive_address" class="col-xs-2 control-label">Main Address</label>
+                                <label for="receive_address" class="col-xs-2 control-label">WOW Address</label>
                                 <div class="col-xs-10 input-group" style="padding-left: 15px; padding-right: 15px;">
-                                    <input id="receive_address" type="text" class="form-control" style="font-weight: bold" maxlength="64" readonly />
-                                    <span class="input-group-btn">
-                                        <button id="btn_copy_address" class="btn btn-primary btn-sm" style="text-transform: none" type="button" tabindex="-1" onclick="copy_address()" data-toggle="tooltip" data-placement="bottom" data-trigger="manual" title="Address copied"><i class="fa fa-copy"></i></button>
-                                        <button id="btn_qr_address" class="btn btn-primary btn-sm" style="text-transform: none" type="button" tabindex="-1" onclick="qr_address()" title="Show QR code"><i class="fa fa-qrcode"></i></button>
-                                    </span>
+                                 <textarea class="form-control" id="receive_address" rows="3" readonly></textarea>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-left: 15px; margin-right: 15px;">
-                        <div class="panel panel-default">
-                          <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                              Used Addresses
-                            </a>
-                          </h4>
-                          </div>
-                          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table id="table_used_subaddresses" class="table table-hover table-striped table-condensed">
-                                        <thead>
-                                            <tr>
-                                                <th>Address</th>
-                                                <th style="text-align: right">Balance</th>
-                                                <th style="text-align: right">Unlocked</th>
-                                                <th style="text-align: right">Index</th>
-                                                <th>&nbsp;</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="panel panel-default">
-                          <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                              New Subaddresses
-                            </a>
-                          </h4>
-                          </div>
-                          <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                            <div class="panel-body" style="overflow: auto">
-                                <div class="table-responsive">
-                                    <table id="table_new_subaddresses" class="table table-hover table-striped table-condensed">
-                                        <thead>
-                                            <tr>
-                                                <th>Address</th>
-                                                <th style="text-align: right">Index</th>
-                                                <th>&nbsp;</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
+                    <span class="input-group-btn" align="center">
+                        <button id="btn_copy_address" type="button" class="btn btn-primary" onclick="copy_address()" data-toggle="tooltip" data-placement="bottom" data-trigger="manual" title="Address copied"><i class="fa fa-copy"></i> Copy Address</button>
+                        <button id="btn_qr_address" type="button" class="btn btn-primary" onclick="qr_address()" title="Show QR code"><i class="fa fa-eye"></i> Get QR Code</button>
+                    </span>
+                    <img src="./images/wow.png" class="wow">
                 </div>
                 <div id="balance_tab" class="tab-pane fade in active">
                     <h3>BALANCE</h3>
@@ -1193,8 +1146,8 @@ html ="""
                                 <h5><i class="fa fa-fw fa-unlock"></i> Unlocked Balance:</h5>
                             </div>
                             <div class="col-xs-6" style="text-align:right">
-                                <h5><span id="balance">0.000000000</span> <small>WOW</small> <span class="syncing"> (syncing)</span></h5>
-                                <h5><span id="unlocked_balance">0.000000000</span> <small>WOW</small> <span class="syncing"> (syncing)</span></h5>
+                                <h5><span id="balance">0.000000000</span> <small> &#x2375;</small> <span class="syncing"> (syncing)</span></h5>
+                                <h5><span id="unlocked_balance">0.000000000</span> <small> &#x2375;</small> <span class="syncing"> (syncing)</span></h5>
                             </div>
                             <div class="col-xs-12" style="margin-top: 10px">
                                 <button id="btn_rescan_spent" type="button" class="btn btn-primary" onclick="rescan_spent()" disabled><i class="fa fa-sort-amount-desc"></i> Rescan Spent</button>
@@ -1270,14 +1223,12 @@ html ="""
                                 </div>
                                 -->
                                 <div class="col-sm-6">
-                                    <label for="send_priority" class="col-xs-4 control-label">Priority <sup>2</sup></label>
+                                    <label for="send_priority" class="col-xs-4 control-label">Priority <sup>*</sup></label>
                                     <div class="col-xs-8">
                                         <select id="send_priority" class="form-control">
-                                          <option value="1" selected>Normal (x1 fee)</option>
-                                          <option value="2">High (x2 fee)</option>
-                                          <option value="4">Higher (x4 fee)</option>
-                                          <option value="20">Elevated (x20 fee)</option>
-                                          <option value="166">Forceful (x166 fee)</option>
+                                          <option value="1" selected>Normal</option>
+                                          <option value="2">Fast (x2 fee)</option>
+                                          <option value="4">High priority (x4 fee)</option>
                                         </select>
                                        <!--<input id="send_fee_level_slider" type="text"/>--> 
                                     </div>
@@ -1288,8 +1239,7 @@ html ="""
                                     <label class="col-xs-2 control-label sr-only">&nbsp;</label>
                                     <div class="col-xs-10">
                                         <input id="checkbox_save_address" type="checkbox" /> <label for="checkbox_save_address">Save address (with payment id) to address book</label>
-                                        <label style="color:#999"><small>1. Higher mixin (ringsize) means higher transaction cost, using default mixin# (12) is recommended</small></label>
-                                        <label style="color:#999"><small>2. Only choose higher priority when there are many transactions in tx pool or "Normal" works just fine</small></label>
+                                        <label style="color:#999"><small>*Only choose higher priority when there are many transactions in tx pool</small></label>
                                     </div>
                                 </div>
                             </div>
@@ -1500,7 +1450,7 @@ html ="""
                     <p class="tx-list tx-{{cls_in_out}}"><i class="fa fa-{{ tx_fa_icon }}"></i> ({{tx_direction}}) <span class="tx-list txid"><a href="javascript:open_link('http://explorer.wowne.ro/tx/{{ tx_id }}')" title="View on blockchain explorer">{{ tx_id }}</a></span></p>
                     Payment ID: <span class="tx-list tx-payment-id">{{ tx_payment_id }}</span><br/>
                     Height: <span class="tx-list tx-height">{{ tx_height }}</span>  Date: <span class="tx-list tx-date">{{ tx_date }}</span> Time: <span class="tx-list tx-time">{{ tx_time }}</span> Status: <span class="tx-list tx-status">{{ tx_status }}</span><br/>
-                    <p style="font-size:140%">Amount: <span class="tx-list tx-{{cls_in_out}} tx-amount {{tx_lock_cls}}">{{{tx_lock_icon}}}{{ tx_amount }}</span> <span class="{{ tx_fee_hide }}">Fee:</span> <span class="tx-list tx-{{cls_in_out}} tx-fee {{ tx_fee_hide }}">{{ tx_fee }}</span></p> 
+                    <p style="font-size:140%">Amount: <span class="tx-list tx-{{cls_in_out}} tx-amount {{tx_lock_cls}}">{{{tx_lock_icon}}}{{ tx_amount }}<small> &#x2375;</small></span> <span class="{{ tx_fee_hide }}">Fee:</span> <span class="tx-list tx-{{cls_in_out}} tx-fee {{ tx_fee_hide }}">{{ tx_fee }}<small> &#x2375;</small></span></p> 
                 </div>
                 <div class="col-xs-2">
                     <button class="btn btn-warning" onclick="view_tx_detail('{{ tx_height }}', '{{ tx_id }}')">Details</button>
@@ -1517,7 +1467,7 @@ html ="""
                 <li>Payment ID: <span class="tx-list tx-payment-id">{{ tx_payment_id }}</span></li>
                 <li>Height: <span class="tx-list tx-height">{{ tx_height }}</span>  Date: <span class="tx-list tx-date">{{ tx_date }}</span> Time: <span class="tx-list tx-time">{{ tx_time }}</span></li>
                 <li>Status: <span class="tx-list tx-status">{{ tx_status }}</span></li>
-                <li>Amount: <span class="tx-list tx-{{cls_in_out}} tx-amount {{tx_lock_cls}}">{{{tx_lock_icon}}}{{ tx_amount }}</span> <span class="{{ tx_fee_hide }}">Fee:</span> <span class="tx-list tx-{{cls_in_out}} tx-fee {{ tx_fee_hide }}">{{ tx_fee }}</span></li>
+                <li>Amount: <span class="tx-list tx-{{cls_in_out}} tx-amount {{tx_lock_cls}}">{{{tx_lock_icon}}}{{ tx_amount }}<small> &#x2375;</small></span><span class="{{ tx_fee_hide }}">Fee:</span> <span class="tx-list tx-{{cls_in_out}} tx-fee {{ tx_fee_hide }}">{{ tx_fee }}<small> &#x2375;</small></span></li>
                 <li class="{{ tx_note_hide }}">Tx Note: <span class="tx-list tx-note">{{ tx_note }}</span></li>
             </ul>
             <div class="tx-destinations {{ tx_destinations_hide }}">
@@ -1544,7 +1494,7 @@ html ="""
                 <td>{{ tx_date_time }}</td>
                 <td>{{ tx_id_short }}</td>
                 <td>{{ tx_payment_id }}</td>
-                <td align="right">{{ tx_amount }}</td>
+                <td align="right">{{ tx_amount }}<small> &#x2375;</small></td>
                 <td><button class="btn btn-default btn-sm" onclick="view_tx_detail('{{ tx_height }}', '{{ tx_id }}')">Details</button></td>
             </tr>
         </script>
