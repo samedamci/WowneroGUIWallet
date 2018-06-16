@@ -1,0 +1,3 @@
+[submodule "wownero"]
+	path = wownero
+	url = https://github.com/wownero/wownero

@@ -1,36 +1,24 @@
 # Wownero GUI Wallet
 
-Copyright (c) 2017, Sumokoin.org
+**One of the most ~~easy-to-use, intuitive~~ shitiest GUI (full) wallets in crypto.**
 
-**One of the most easy-to-use, intuitive GUI (full) wallets in crypto.**
+![Balance](/Resources/www/images/balance.png)
+![Receive](/Resources/www/images/receive.png)
+![Send](/Resources/www/images/send.png)
+![History](/Resources/www/images/history.png)
+![Settings](/Resources/www/images/settings.png)
 
-![](https://www.sumokoin.org/images/sumokoin-gui-wallet-v0.0.1-b2.png)
+# Ubuntu/Debian Installation
 
-
-# Installation & running from source codes
-
-1. Clone the repo:
+1. Clone the repository:
 		
 		git clone https://github.com/wownero/WowneroGUIWallet
 
-2. Install dependencies (with Python 2.7):
+2. Run installation script:
 
-	* Generally, you can use Python `pip` to install required components:
-		
-			pip install PySide, requests, psutil
-	
-	* or
-			
-			pip install -r requirements.txt 
-	
-	* On some OSes, PySide may be required to install from pre-built packages. For example, on Ubuntu 16.04, install PySide with the following command:
-			
-			sudo apt install python-pyside
-
-
-3. Build/download Wownero binaries from [Wownero repo](https://github.com/wownero/wownero) and put it to `Resources/bin` sub-directory.
-
-4. Run the wallet (Python 2.7):
-		
 		cd /path/to/WowneroGUIWallet
+		./install.sh
+
+3. Start the wallet:
+		
 		python wallet.py
