@@ -104,7 +104,7 @@ class WalletCliManager(ProcessManager):
     
     def __init__(self, resources_path, wallet_file_path, wallet_log_path, restore_wallet=False, restore_height=0):
         if not restore_wallet:
-            wallet_args = u'%s/bin/wownero-wallet-cli --generate-new-wallet=%s --log-file=%s' \
+            wallet_args = u'%s/bin/wownero-wallet-cli --create-address-file --generate-new-wallet=%s --log-file=%s' \
                                                 % (resources_path, wallet_file_path, wallet_log_path)
         else:
             wallet_args = u'%s/bin/wownero-wallet-cli --create-address-file --log-file=%s --restore-deterministic-wallet --restore-height %d' \
