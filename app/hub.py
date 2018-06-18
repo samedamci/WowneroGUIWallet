@@ -9,7 +9,6 @@ from __future__ import print_function
 
 import os, binascii
 from time import sleep
-import uuid
 import json
 import re
 import hashlib
@@ -64,7 +63,32 @@ class Hub(QObject):
         else:
             return
         
-        new_wallet_file = os.path.join(wallet_dir_path, str(uuid.uuid4().hex) + '.bin')
+        new_wallet_file = os.path.join(wallet_dir_path, os.path.basename(wallet_filename))
+
+        while True:
+            if os.path.isfile(new_wallet_file):
+                QMessageBox.warning(
+                    self.new_wallet_ui,
+                    'Wallet Name',
+                    'Wallet with the same name already exists. '
+                    'Please choose a different name.',
+                )
+                wallet_name, res = self._custom_input_dialog(
+                    self.new_wallet_ui,
+                    'Wallet Name',
+                    'Set wallet name:',
+                )
+                if not res:
+                    return
+                if res and wallet_name:
+                    new_wallet_file = os.path.join(
+                        wallet_dir_path,
+                        wallet_name,
+                    )
+                    if os.path.isfile(new_wallet_file):
+                        continue
+                    break
+
         if wallet_filename:
             wallet_key_filename = wallet_filename + '.keys'
             wallet_address_filename = wallet_filename + '.address.txt'
@@ -72,9 +96,8 @@ class Hub(QObject):
             if not os.path.exists(wallet_key_filename):
                 QMessageBox.warning(self.new_wallet_ui, \
                     'Import Wallet',\
-                     """Error: Key file does not exist!<br>
-                     Are you sure to select correct wallet file?<br><br>
-                     Hint: Wallet file often ends with .bin""")
+                     """Error: Key file for this wallet does not exist!<br>
+                     Are you sure to select correct wallet file?""")
                 return False
             try:  
                 copy2(wallet_filename, os.path.join(wallet_dir_path, new_wallet_file))
@@ -205,13 +228,25 @@ class Hub(QObject):
 
             has_name = False
             while True:
-                wallet_name, res = self._custom_input_dialog(self.new_wallet_ui, 'Wallet Name', 'Set wallet name:')
+                wallet_name, res = self._custom_input_dialog(
+                    self.new_wallet_ui,
+                    'Wallet Name',
+                    'Set wallet name:',
+                )
                 if not res:
                     break
                 if res and wallet_name:
-                    wallet_filepath = os.path.join(wallet_dir_path, wallet_name)
+                    wallet_filepath = os.path.join(
+                        wallet_dir_path,
+                        wallet_name,
+                    )
                     if os.path.isfile(wallet_filepath):
-                        QMessageBox.warning(self.new_wallet_ui, 'Wallet Name', 'Wallet with the same name already exists. Please choose a different name.')
+                        QMessageBox.warning(
+                            self.new_wallet_ui,
+                            'Wallet Name',
+                            'Wallet with the same name already exists. '
+                            'Please choose a different name.',
+                        )
                         continue
                     has_name = True
                     break
