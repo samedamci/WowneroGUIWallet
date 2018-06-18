@@ -202,8 +202,21 @@ class Hub(QObject):
                             break
                 else:
                     break
-                
-            if has_password:
+
+            has_name = False
+            while True:
+                wallet_name, res = self._custom_input_dialog(self.new_wallet_ui, 'Wallet Name', 'Set wallet name:')
+                if not res:
+                    break
+                if res and wallet_name:
+                    wallet_filepath = os.path.join(wallet_dir_path, wallet_name)
+                    if os.path.isfile(wallet_filepath):
+                        QMessageBox.warning(self.new_wallet_ui, 'Wallet Name', 'Wallet with the same name already exists. Please choose a different name.')
+                        continue
+                    has_name = True
+                    break
+
+            if has_password and has_name:
                 if not mnemonic_seed: # i.e. create new wallet
                     mnemonic_seed_language = "0" # english
                     seed_language_list = [sl[1] for sl in seed_languages]
@@ -224,7 +237,6 @@ class Hub(QObject):
                 self.on_new_wallet_show_progress_event.emit("Restoring wallet..." \
                                         if mnemonic_seed else "Creating wallet...")
                 self.app_process_events()
-                wallet_filepath = os.path.join(wallet_dir_path, str(uuid.uuid4().hex) + '.bin')
                 wallet_log_path = os.path.join(wallet_dir_path, 'wownero-wallet-cli.log')
                 resources_path = self.app.property("ResPath")
                 if not mnemonic_seed: # i.e. create new wallet
