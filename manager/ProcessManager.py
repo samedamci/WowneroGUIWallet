@@ -26,8 +26,7 @@ DETACHED_PROCESS = 0x00000008  # forcing the child to have no console at all
 class ProcessManager(Thread):
     def __init__(self, proc_args, proc_name=""):
         Thread.__init__(self)
-        args_array = proc_args.encode( sys.getfilesystemencoding() ).split(u' ')
-        self.proc = Popen(args_array,
+        self.proc = Popen(proc_args,
                           shell=False, 
                           stdout=PIPE, stderr=STDOUT, stdin=PIPE, 
                           creationflags=CREATE_NO_WINDOW)
@@ -76,7 +75,13 @@ class ProcessManager(Thread):
 
 class SumokoindManager(ProcessManager):
     def __init__(self, resources_path, log_level=0, block_sync_size=10):
-        proc_args = u'%s/bin/wownerod --log-level %d --block-sync-size %d' % (resources_path, log_level, block_sync_size)
+        proc_args = [
+            r'%s/bin/wownerod' % resources_path,
+            '--log-level',
+            str(log_level),
+            '--block-sync-size',
+            str(block_sync_size),
+        ]
         ProcessManager.__init__(self, proc_args, "wownerod")
         self.synced = Event()
         self.stopped = Event()
@@ -104,11 +109,24 @@ class WalletCliManager(ProcessManager):
     
     def __init__(self, resources_path, wallet_file_path, wallet_log_path, restore_wallet=False, restore_height=0):
         if not restore_wallet:
-            wallet_args = u'%s/bin/wownero-wallet-cli --create-address-file --generate-new-wallet=%s --log-file=%s' \
-                                                % (resources_path, wallet_file_path, wallet_log_path)
+            wallet_args = [
+                r'%s/bin/wownero-wallet-cli' % resources_path,
+                '--create-address-file',
+                '--generate-new-wallet',
+                wallet_file_path,
+                '--log-file',
+                wallet_log_path,
+            ]
         else:
-            wallet_args = u'%s/bin/wownero-wallet-cli --create-address-file --log-file=%s --restore-deterministic-wallet --restore-height %d' \
-                                                % (resources_path, wallet_log_path, restore_height)
+            wallet_args = [
+                r'%s/bin/wownero-wallet-cli' % resources_path,
+                '--create-address-file',
+                '--restore-deterministic-wallet',
+                '--restore-height',
+                str(restore_height),
+                '--log-file',
+                wallet_log_path
+            ]
         ProcessManager.__init__(self, wallet_args, "wownero-wallet-cli")
         self.ready = Event()
         self.last_error = ""
@@ -156,8 +174,21 @@ class WalletRPCManager(ProcessManager):
     def __init__(self, resources_path, wallet_file_path, wallet_password, app, log_level=1):
         self.user_agent = str(uuid4().hex)
         wallet_log_path = os.path.join(os.path.dirname(wallet_file_path), "wownero-wallet-rpc.log")
-        wallet_rpc_args = u'%s/bin/wownero-wallet-rpc --wallet-file %s --log-file %s --disable-rpc-login --trusted-daemon --rpc-bind-port 34578 --prompt-for-password --log-level %d' \
-                                            % (resources_path, wallet_file_path, wallet_log_path, log_level)
+        wallet_rpc_args = [
+            r'%s/bin/wownero-wallet-rpc' % resources_path,
+            '--wallet-file',
+            wallet_file_path,
+            '--log-file',
+            wallet_log_path,
+            '--disable-rpc-login',
+            '--trusted-daemon',
+            '--rpc-bind-port',
+            '34578',
+            '--prompt-for-password',
+            '--log-level',
+            str(log_level),
+
+        ]
                                                                                 
         ProcessManager.__init__(self, wallet_rpc_args, "wownero-wallet-rpc")
         sleep(0.2)

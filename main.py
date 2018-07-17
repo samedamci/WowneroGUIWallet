@@ -63,7 +63,7 @@ def main():
         resources_path = os.path.normpath(os.path.abspath(os.path.join(app_path, "..", "Resources")))
     else:
         resources_path = os.path.normpath(os.path.abspath(os.path.join(app_path, "Resources")))
-        
+
     # Application setup
     
     app = QSingleApplication(sys.argv)
@@ -75,7 +75,7 @@ def main():
     if sys.platform == 'darwin':
         app.setAttribute(QtCore.Qt.AA_DontShowIconsInMenus)
         
-    if not _check_file_integrity(app):
+    if not hasattr(sys, 'frozen') and not _check_file_integrity(app):
         QMessageBox.critical(None, "Application Fatal Error", """<b>File integrity check failed!</b>
                 <br><br>This could be a result of unknown (maybe, malicious) action<br> to wallet code files.""")
         app.quit()
